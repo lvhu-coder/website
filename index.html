@@ -2,49 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A website</title>
+    <title>Download Buttons</title>
     <style>
         body {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            height: 100vh;
-            background-color: #0d47a1;
-            font-family: Arial, sans-serif;
-            color: white;
-            flex-direction: column;
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
         }
 
-        h1 {
-            margin-bottom: 30px;
-        }
-
-        button {
-            padding: 15px 30px;
-            font-size: 18px;
-            cursor: pointer;
-            border: none;
-            border-radius: 8px;
-            background-color: #ffca28;
-            color: #000;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #ffc107;
+        a button {
+            padding: 10px 20px;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
-
-<a href="gd.zip" download>
-    <button>gd</button>
-</a>
-
-<a href="dm.zip" download>
-    <button>gd</button>
-</a>
-
+    <a href="gd.zip" download><button>gd</button></a>
+    <a href="dm.zip" download><button>dm</button></a>
 </body>
 </html>
