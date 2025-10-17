@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>A website</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Quicksand', sans-serif !important;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #0a1f44;
+            color: #ffffff;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 40
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            padding: 12px 28px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            background-color: #1e3c72;
+            color: #ffffff;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #2a5298;
+            transform: scale(1.05);
+        }
+
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>To run a game, extract the files and open the HTML file named after the game's initials.</h1>
+    <div class="button-group">
+        <a href="gd.zip" download><button>Geometry Dash</button></a>
+        <a href="dm.zip" download><button>Drive Mad</button></a>
+    </div>
+</body>
+</html>
