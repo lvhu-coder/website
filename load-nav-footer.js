@@ -6,16 +6,20 @@ function loadHTML(id, url) {
         })
         .then(data => {
             document.getElementById(id).innerHTML = data;
-
             if (id === 'footer-placeholder') {
                 const footer = document.getElementById('footer-banner');
-                footer.addEventListener('click', function() {
-                    document.body.innerHTML = '';
-                    document.body.style.backgroundColor = '#0f111a';
-                    setTimeout(function() {
-                        window.location.href = 'real.html';
-                    }, 1000);
-                });
+
+                if (footer) {
+                    footer.addEventListener('click', function() {
+                        document.body.innerHTML = '';
+                        document.body.style.backgroundColor = '#0f111a';
+                        setTimeout(function() {
+                            window.location.href = 'real.html';
+                        }, 1000);
+                    });
+                } else {
+                    console.error('Footer element not found');
+                }
             }
         })
         .catch(error => console.error('Error loading HTML:', error));
