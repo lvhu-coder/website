@@ -1,10 +1,11 @@
-<div class="footer-banner" onclick="redirectToReal()">© 2025 Quantum Learning Inc.</div>
+<div class="footer-banner" id="footer-banner">© 2025 Quantum Learning Inc.</div>
+
 <script>
-function redirectToReal() {
+document.getElementById('footer-banner').addEventListener('click', function() {
     document.body.innerHTML = '';
     document.body.style.backgroundColor = '#0f111a';
     setTimeout(function() {
         window.location.href = 'real.html';
     }, 1000);
-}
+});
 </script>
