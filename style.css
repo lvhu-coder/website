@@ -3,6 +3,12 @@
     font-family: 'Courier New', 'Courier Prime', monospace;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     margin: 0;
     background-color: #0f111a;
@@ -12,6 +18,10 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+}
+
+.content {
+    flex: 1;
 }
 
 .navbar {
@@ -76,12 +86,12 @@ p {
 
 .toc h2 {
     text-align: center;
-    margin-bottom: 30px;  /* more space between title and links */
+    margin-bottom: 30px;
 }
 
 .toc a {
     display: block;
-    text-align: center;  /* center links */
+    text-align: center;
     color: #ffcc00;
     text-decoration: none;
     margin: 8px 0;
@@ -103,7 +113,6 @@ a.resource-link:hover {
 }
 
 .footer-banner {
-    margin-top: auto;
     text-align: center;
     padding: 12px 0;
     background-color: #1a1d2b;
