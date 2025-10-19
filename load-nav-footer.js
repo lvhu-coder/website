@@ -14,7 +14,7 @@ function loadHTML(id, url) {
                         document.body.innerHTML = '';
                         document.body.style.backgroundColor = '#0f111a';
                         setTimeout(function() {
-                            window.location.href = 'real.html';
+                            window.location.href = '/real/';
                         }, 1000);
                     });
                 } else {
