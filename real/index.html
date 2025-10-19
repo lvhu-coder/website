@@ -78,14 +78,16 @@
 
     <script>
     (function(){
-    const p = location.pathname;
-    if (p.endsWith('real.html')) {
-        let newPath = p.replace(/real\.html$/, '');
-        if (newPath === '') newPath = '/';
-        history.replaceState({}, '', newPath + location.search + location.hash);
-    }
+        const p = location.pathname;
+        // match /real, /real/, or /real/index.html (and also if it's /something/real/)
+        const regex = /\/real(?:\/index\.html)?\/?$/;
+        if (regex.test(p)) {
+            let newPath = p.replace(regex, '');
+            if (newPath === '') newPath = '/';
+            history.replaceState({}, '', newPath + location.search + location.hash);
+        }
     })();
-</script>
+    </script>
 
 </body>
 </html>
