@@ -15,12 +15,10 @@ function loadHTML(id, url) {
                     footer.addEventListener('click', function(event) {
                         console.log('Footer clicked');
                         event.preventDefault();
-                        // clear the page visually before redirecting
                         document.body.innerHTML = '';
                         document.body.style.backgroundColor = '#0f111a';
                         setTimeout(function() {
                             console.log('Redirecting to /real/ (relative)');
-                            // use a single, consistent relative directory redirect
                             window.location.href = 'real/';
                         }, 1000);
                     });
