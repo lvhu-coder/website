@@ -16,12 +16,33 @@ function loadHTML(id, url) {
                         console.log('Footer clicked');
                         event.preventDefault();
                         try { sessionStorage.setItem('allow_real', '1'); } catch(e) {}
-                        document.body.innerHTML = '';
-                        document.body.style.backgroundColor = '#0f111a';
+                        var elems = Array.prototype.slice.call(document.querySelectorAll('body > :not(script):not(#navbar-placeholder):not(#footer-placeholder)'));
+                        if (elems.length === 0) {
+                            document.body.innerHTML = '';
+                            document.body.style.backgroundColor = '#0f111a';
+                            setTimeout(function() { window.location.href = 'real/'; }, 400);
+                            return;
+                        }
+                        var duration = 300;
+                        var stagger = 120;
+                        elems.forEach(function(el) {
+                            el.style.transition = 'opacity ' + duration + 'ms ease, transform ' + duration + 'ms ease';
+                            el.style.willChange = 'opacity, transform';
+                            el.style.opacity = el.style.opacity || '1';
+                            el.style.transform = el.style.transform || 'translateY(0)';
+                        });
+                        elems.forEach(function(el, i) {
+                            setTimeout(function() {
+                                el.style.opacity = '0';
+                                el.style.transform = 'translateY(20px)';
+                            }, i * stagger);
+                        });
+                        var total = duration + (elems.length - 1) * stagger + 200;
                         setTimeout(function() {
-                            console.log('Redirecting to /real/ (relative)');
+                            document.body.innerHTML = '';
+                            document.body.style.backgroundColor = '#0f111a';
                             window.location.href = 'real/';
-                        }, 1000);
+                        }, total);
                     });
                 } else {
                     console.error('Footer element not found');
