@@ -18,8 +18,12 @@ function loadHTML(id, url) {
                         document.body.innerHTML = '';
                         document.body.style.backgroundColor = '#0f111a';
                         setTimeout(function() {
+<<<<<<< HEAD
                             console.log('Redirecting to real.html');
                             window.location.href = 'real.html';
+=======
+                            window.location.href = '/real/';
+>>>>>>> 0ab5eda45876a1d87526c59f0d0ea7ec53c02825
                         }, 1000);
                     });
                 } else {
