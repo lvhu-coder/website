@@ -15,6 +15,7 @@ function loadHTML(id, url) {
                     footer.addEventListener('click', function(event) {
                         console.log('Footer clicked');
                         event.preventDefault();
+                        try { sessionStorage.setItem('allow_real', '1'); } catch(e) {}
                         document.body.innerHTML = '';
                         document.body.style.backgroundColor = '#0f111a';
                         setTimeout(function() {

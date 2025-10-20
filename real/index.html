@@ -80,10 +80,19 @@
 
     <script>
     (function(){
-    const p = location.pathname;
-    if (p.endsWith('real.html')) {
-        let newPath = p.replace(/real\.html$/, '');
-        if (newPath === '') newPath = '/';
+    try {
+        var allow = sessionStorage.getItem('allow_real');
+    } catch(e) { var allow = null; }
+    if (!allow) {
+        location.replace('/');
+        return;
+    }
+    // clear the flag so reload/direct visits won't work
+    try { sessionStorage.removeItem('allow_real'); } catch(e) {}
+
+    var p = location.pathname;
+    if (p.endsWith('/real/') || p.endsWith('/real')) {
+        var newPath = p.replace(/\/real\/?$/, '/');
         history.replaceState({}, '', newPath + location.search + location.hash);
     }
     })();
