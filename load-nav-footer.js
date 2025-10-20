@@ -7,13 +7,18 @@ function loadHTML(id, url) {
         .then(data => {
             document.getElementById(id).innerHTML = data;
             if (id === 'footer-placeholder') {
+                console.log('Footer placeholder loaded');
                 const footer = document.getElementById('footer-banner');
 
                 if (footer) {
-                    footer.addEventListener('click', function() {
+                    console.log('Footer banner found');
+                    footer.addEventListener('click', function(event) {
+                        console.log('Footer clicked');
+                        event.preventDefault();
                         document.body.innerHTML = '';
                         document.body.style.backgroundColor = '#0f111a';
                         setTimeout(function() {
+                            console.log('Redirecting to real.html');
                             window.location.href = 'real.html';
                         }, 1000);
                     });
