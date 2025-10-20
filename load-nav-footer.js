@@ -23,8 +23,8 @@ function loadHTML(id, url) {
                             setTimeout(function() { window.location.href = 'real/'; }, 400);
                             return;
                         }
-                        var duration = 300;
-                        var stagger = 120;
+                        var duration = 450;
+                        var stagger = 220;
                         elems.forEach(function(el) {
                             el.style.transition = 'opacity ' + duration + 'ms ease, transform ' + duration + 'ms ease';
                             el.style.willChange = 'opacity, transform';
@@ -37,7 +37,7 @@ function loadHTML(id, url) {
                                 el.style.transform = 'translateY(20px)';
                             }, i * stagger);
                         });
-                        var total = duration + (elems.length - 1) * stagger + 200;
+                        var total = duration + (elems.length - 1) * stagger + 600;
                         setTimeout(function() {
                             document.body.innerHTML = '';
                             document.body.style.backgroundColor = '#0f111a';
