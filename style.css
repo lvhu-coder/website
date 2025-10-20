@@ -11,7 +11,7 @@ html, body {
 
 body {
     margin: 0;
-    background-color: #0f111a;
+    background-color: #0a1f44;
     color: #e0e0e0;
     line-height: 1.6;
     padding: 20px;
@@ -26,7 +26,7 @@ body {
 
 .navbar {
     display: flex;
-    background: #1a1d2b;
+    background: #1e3c72;
     padding: 10px 20px;
     position: sticky;
     top: 0;
@@ -79,7 +79,7 @@ p {
     max-width: none;
     margin: 20px 0;
     padding: 20px;
-    background-color: #1a1d2b;
+    background-color: #1e3c72;
     border-radius: 10px;
     box-sizing: border-box;
 }
@@ -115,7 +115,7 @@ a.resource-link:hover {
 .footer-banner {
     text-align: center;
     padding: 12px 0;
-    background-color: #1a1d2b;
+    background-color: #1e3c72;
     color: #888;
     cursor: text;
     user-select: none;
