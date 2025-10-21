@@ -86,35 +86,6 @@ p {
     margin-bottom: 12px;
 }
 
-.toc {
-    width: 100%;
-    max-width: none;
-    margin: 20px 0;
-    padding: 20px;
-    background-color: #1e3c72;
-    border-radius: 10px;
-    box-sizing: border-box;
-}
-
-.toc h2 {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.toc a {
-    display: block;
-    text-align: center;
-    color: #ffcc00;
-    text-decoration: none;
-    margin: 8px 0;
-    font-size: 20px;
-    transition: color 0.2s;
-}
-
-.toc a:hover {
-    color: #ffffff;
-}
-
 a.resource-link {
     color: #ffcc00;
     text-decoration: none;
