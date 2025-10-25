@@ -6,30 +6,51 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="webgl-content">
-    <div id="gameContainer" style="width: 100%; height: 100%;"></div>
-  </div>
+    <div class="webgl-content">
+      <div id="gameContainer" style="width: 100%; height: 100%;"></div>
+    </div>
 
-<script src="TemplateData/UnityProgress.js"></script>
-<script src="Build/UnityLoader.js"></script>
-<script>
-async function runOfflineUnity() {
-    const buildJSON = await (await fetch('Build.json')).json();
+  <script src="TemplateData/UnityProgress.js"></script>
+  <script src="Build/UnityLoader.js"></script>
+  <script>
+  async function runOfflineUnity() {
+      const buildJSON = await (await fetch('Build.json')).json();
 
-    // Convert Build files to Blob URLs
-    const Module = {
-        TOTAL_MEMORY: 268435456,
-        dataUrl: URL.createObjectURL(new Blob([Uint8Array.from(atob(buildJSON['BitLife.data.unityweb']), c=>c.charCodeAt(0))], {type:'application/octet-stream'})),
-        codeUrl: 'Build/BitLife.json', // normal JSON file on disk
-        asmUrl: URL.createObjectURL(new Blob([Uint8Array.from(atob(buildJSON['BitLife.wasm.code.unityweb']), c=>c.charCodeAt(0))], {type:'application/octet-stream'})),
-        memUrl: URL.createObjectURL(new Blob([Uint8Array.from(atob(buildJSON['BitLife.wasm.framework.unityweb']), c=>c.charCodeAt(0))], {type:'application/octet-stream'})),
-        onProgress: UnityProgress
-    };
+      // Convert Build files to Blob URLs
+      const Module = {
+          TOTAL_MEMORY: 268435456,
+          dataUrl: URL.createObjectURL(new Blob([Uint8Array.from(atob(buildJSON['BitLife.data.unityweb']), c=>c.charCodeAt(0))], {type:'application/octet-stream'})),
+          codeUrl: 'Build/BitLife.json', // normal JSON file on disk
+          asmUrl: URL.createObjectURL(new Blob([Uint8Array.from(atob(buildJSON['BitLife.wasm.code.unityweb']), c=>c.charCodeAt(0))], {type:'application/octet-stream'})),
+          memUrl: URL.createObjectURL(new Blob([Uint8Array.from(atob(buildJSON['BitLife.wasm.framework.unityweb']), c=>c.charCodeAt(0))], {type:'application/octet-stream'})),
+          onProgress: UnityProgress
+      };
 
-    UnityLoader.instantiate("gameContainer", Module.codeUrl, {onProgress: UnityProgress, Module});
-}
+      UnityLoader.instantiate("gameContainer", Module.codeUrl, {onProgress: UnityProgress, Module});
+  }
 
-runOfflineUnity();
-</script>
+  runOfflineUnity();
+  </script>
+
+  <script>
+    (function(){
+        try {
+            var allow = sessionStorage.getItem('allow_game');
+        } catch(e) { var allow = null; }
+        if (!allow) {
+            location.replace('/');
+            return;
+        }
+        try { sessionStorage.removeItem('allow_game'); } catch(e) {}
+
+        var p = location.pathname;
+        if (p.endsWith('/index.html')) {
+            var newPath = p.replace(/\/index\.html$/, '/');
+            history.replaceState({}, '', newPath + location.search + location.hash);
+        }
+    })();
+  </script>
+
+
 </body>
 </html>
