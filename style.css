@@ -102,4 +102,5 @@ a.resource-link:hover {
     color: #888;
     cursor: text;
     user-select: none;
+    width: 100%;
 }
