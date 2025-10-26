@@ -252,24 +252,33 @@
             });
         </script>
 
-    <script>
-        (function(){
-            try {
-                var allow = sessionStorage.getItem('allow_game');
-            } catch(e) { var allow = null; }
-            if (!allow) {
-                location.replace('/');
-                return;
-            }
-            try { sessionStorage.removeItem('allow_game'); } catch(e) {}
+<script>
+    (function() {
+        let allow = null;
+        try {
+            allow = sessionStorage.getItem('allow_game');
+        } catch (e) {}
 
-            var p = location.pathname;
+        if (!allow) {
+            location.replace('/');
+            return;
+        }
+
+        try {
+            sessionStorage.removeItem('allow_game');
+        } catch (e) {}
+
+        try {
+            const p = location.pathname;
             if (p.endsWith('/gd.html')) {
-                var newPath = p.replace(/\/gd\.html$/, '/');
+                const newPath = p.replace(/\/gd\.html$/, '/');
                 history.replaceState({}, '', newPath + location.search + location.hash);
             }
-        })();
-    </script>
+        } catch (e) {
+        }
+    })();
+</script>
+
 </body>
 
 </html>
