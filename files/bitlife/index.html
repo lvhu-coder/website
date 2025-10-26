@@ -7,16 +7,22 @@
   <link rel="stylesheet" href="TemplateData/style.css">
 </head>
 
-<body style="margin:0; overflow:hidden;">
+<body>
   <div class="webgl-content">
-    <div id="gameContainer" style="width: 100vw; height: 100vh;"></div>
+    <div id="gameContainer" style="width: 960px; height: 600px; margin: auto;"></div>
+    <div class="footer">
+      <div class="webgl-logo"></div>
+      <div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
+      <div class="title">BitLife</div>
+    </div>
   </div>
 
   <script src="TemplateData/UnityProgress.js"></script>
   <script src="Build/UnityLoader.js"></script>
-
   <script>
-    UnityLoader.instantiate("gameContainer", "Build/BitLife.json", { onProgress: UnityProgress });
+    var gameInstance = UnityLoader.instantiate("gameContainer", "Build/BitLife.json", {
+      onProgress: UnityProgress
+    });
   </script>
 
   <script>
@@ -24,12 +30,10 @@
         try {
             var allow = sessionStorage.getItem('allow_game');
         } catch(e) { var allow = null; }
-
         if (!allow) {
             location.replace('/');
             return;
         }
-
         try { sessionStorage.removeItem('allow_game'); } catch(e) {}
 
         var p = location.pathname;
