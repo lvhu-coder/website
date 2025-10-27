@@ -2,19 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>BitLife</title>
+  <title>BitLife Offline</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="TemplateData/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
   <div class="webgl-content">
-    <div id="gameContainer" style="width: 100%; height: 100%;"></div>
-    <div class="footer">
-      <div class="webgl-logo"></div>
-      <div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
-      <div class="title">BitLife</div>
-    </div>
+    <div id="gameContainer"></div>
   </div>
 
   <script src="TemplateData/UnityProgress.js"></script>
@@ -39,7 +33,10 @@
         var p = location.pathname;
         if (p.endsWith('/index.html')) {
             var newPath = p.replace(/\/index\.html$/, '/');
-            history.replaceState({}, '', newPath + location.search + location.hash);
+            try {
+                history.replaceState({}, '', newPath + location.search + location.hash);
+            } catch(e) {
+            }
         }
     })();
   </script>
