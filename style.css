@@ -22,10 +22,6 @@ body {
     min-height: 100vh;
 }
 
-.content {
-    flex: 1;
-}
-
 .navbar {
     display: flex;
     background: #1e3c72;
@@ -112,5 +108,5 @@ a.resource-link:hover {
 }
 
 .footer-banner span {
-    cursor: text; /* text cursor on the actual text */
+    cursor: text;
 }
