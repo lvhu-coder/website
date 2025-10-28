@@ -83,12 +83,85 @@
     </style>
 </head>
 <body>
+    <script>
+        const swCode = `
+        const CACHE_NAME = 'universal-cache-v1';
+
+        async function cacheFiles(files) {
+            const cache = await caches.open(CACHE_NAME);
+            for (const url of files) {
+                try {
+                    const match = await cache.match(url);
+                    if (!match) {
+                        await cache.add(url);
+                        console.log('Cached:', url);
+                    }
+                } catch(e) {
+                    console.error('Failed to cache', url, e);
+                }
+            }
+        }
+
+        self.addEventListener('message', e => {
+            if (e.data?.type === 'CACHE_FILES' && Array.isArray(e.data.files)) {
+                cacheFiles(e.data.files);
+            }
+        });
+
+        self.addEventListener('fetch', e => {
+            e.respondWith(caches.match(e.request).then(resp => resp || fetch(e.request)));
+        });
+        `;
+
+        const swBlob = new Blob([swCode], { type: 'application/javascript' });
+        const swURL = URL.createObjectURL(swBlob);
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register(swURL)
+                    .then(() => console.log('Service Worker registered'))
+                    .catch(console.error);
+            });
+        }
+        document.querySelectorAll('button[data-cache]').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const files = JSON.parse(btn.dataset.cache);
+                if ('serviceWorker' in navigator) {
+                    const registration = await navigator.serviceWorker.ready;
+                    registration.active?.postMessage({ type: 'CACHE_FILES', files });
+                    console.log('Sent files to Service Worker for caching:', files);
+                }
+            });
+        });
+    </script>
+
     <p>To run a game, extract the files and open the HTML file named after the game or its initials.</p>
     <h2>Geometry Dash (requires internet connection)</h2>
     <div class="button-group">
-        <a href="https://drive.google.com/uc?export=download&id=1Qspi5zPlgiuTN9XUZUektzZUamx0_tt2" download><button>Via Google Drive (CUSD Only)</button></a>
-        <a href="https://drive.google.com/uc?export=download&id=1P9MUKz6eezor_rMTC4FgMNBuXBKx4w5y" download><button>Via Google Drive (Non-CUSD)</button></a>
-        <a href="https://github.com/lvhu-coder/website/releases/download/v1.0/gd.zip" download><button>Via Github</button></a>
+        <a href="https://drive.google.com/uc?export=download&id=1Qspi5zPlgiuTN9XUZUektzZUamx0_tt2" download>
+            <button data-cache='[
+                "https://rawcdn.githack.com/genizy/google-class/main/gdlite/themes/geometrydashlite.io/rs/css/home.css?v=1",
+                "https://e3334afd.cf-nate.pages.dev/0/g/geodash/game/splash.png",
+                "https://rawcdn.githack.com/genizy/google-class/main/gdlite/Build/UnityLoader.js",
+                "https://rawcdn.githack.com/genizy/google-class/main/gdlite/Build/GeometryDashLite.json"
+            ]'>Via Google Drive (CUSD Only)</button>
+        </a>
+        <a href="https://drive.google.com/uc?export=download&id=1P9MUKz6eezor_rMTC4FgMNBuXBKx4w5y" download>
+            <button data-cache='[
+                "https://rawcdn.githack.com/genizy/google-class/main/gdlite/themes/geometrydashlite.io/rs/css/home.css?v=1",
+                "https://e3334afd.cf-nate.pages.dev/0/g/geodash/game/splash.png",
+                "https://rawcdn.githack.com/genizy/google-class/main/gdlite/Build/UnityLoader.js",
+                "https://rawcdn.githack.com/genizy/google-class/main/gdlite/Build/GeometryDashLite.json"
+            ]'>Via Google Drive (Non-CUSD)</button>
+        </a>
+        <a href="https://github.com/lvhu-coder/website/releases/download/v1.0/gd.zip" download>
+            <button data-cache='[
+                "https://rawcdn.githack.com/genizy/google-class/main/gdlite/themes/geometrydashlite.io/rs/css/home.css?v=1",
+                "https://e3334afd.cf-nate.pages.dev/0/g/geodash/game/splash.png",
+                "https://rawcdn.githack.com/genizy/google-class/main/gdlite/Build/UnityLoader.js",
+                "https://rawcdn.githack.com/genizy/google-class/main/gdlite/Build/GeometryDashLite.json"
+            ]'>Via Github</button>
+        </a>
     </div>
 
     <p></p>
@@ -152,6 +225,14 @@
     </fieldset>
     
     <h2>Previous Updates</h2>
+
+    <fieldset class="update-box">
+        <legend>October 25, 2025</legend>
+        <p>Version 3.5</p>
+        <ul>
+            <li>Geometry Dash is now fully offline (used caching for Unity WebGL)</li>
+        </ul>
+    </fieldset>
 
     <fieldset class="update-box">
         <legend>October 25, 2025</legend>
