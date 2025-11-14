@@ -218,6 +218,7 @@
         <button onclick="try{sessionStorage.setItem('allow_game','1');}catch(e){} window.location.href='files/dm/dm.html';">Drive Mad</button>
         <button onclick="try{sessionStorage.setItem('allow_game','1');}catch(e){} window.location.href='files/bitlife/';">BitLife</button>
         <button onclick="try{sessionStorage.setItem('allow_game','1');}catch(e){} window.location.href='files/tag/tag.html';">Tag</button>
+        <button onclick="try{sessionStorage.setItem('allow_game','1');}catch(e){} window.location.href='files/tmtd/index.html';">Ten Minutes Till Dawn</button>
     </div>
 
     <p></p>
@@ -384,8 +385,12 @@
         try { sessionStorage.removeItem('allow_real'); } catch(e) {}
 
         var p = location.pathname;
-        if (p.endsWith('/real/') || p.endsWith('/real')) {
-            var newPath = p.replace(/\/real\/?$/, '/');
+
+		var index = p.indexOf('/website');
+
+        if (index !== -1) {
+            var newPath = p.substring(0, index + 8);
+            if (!newPath.endsWith('/')) newPath += '/';
             history.replaceState({}, '', newPath + location.search + location.hash);
         }
 

@@ -268,13 +268,14 @@
             sessionStorage.removeItem('allow_game');
         } catch (e) {}
 
-        try {
-            const p = location.pathname;
-            if (p.endsWith('/gd.html')) {
-                const newPath = p.replace(/\/gd\.html$/, '/');
-                history.replaceState({}, '', newPath + location.search + location.hash);
-            }
-        } catch (e) {
+        var p = location.pathname;
+
+        var index = p.indexOf('/website');
+
+        if (index !== -1) {
+            var newPath = p.substring(0, index + 8);
+            if (!newPath.endsWith('/')) newPath += '/';
+            history.replaceState({}, '', newPath + location.search + location.hash);
         }
     })();
 </script>

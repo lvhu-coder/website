@@ -34,10 +34,14 @@
             try { sessionStorage.removeItem('allow_game'); } catch(e) {}
 
             var p = location.pathname;
-            if (p.endsWith('/tag.html')) {
-                var newPath = p.replace(/\/tag\.html$/, '/');
-                history.replaceState({}, '', newPath + location.search + location.hash);
-            }
+
+			var index = p.indexOf('/website');
+
+			if (index !== -1) {
+				var newPath = p.substring(0, index + 8);
+				if (!newPath.endsWith('/')) newPath += '/';
+				history.replaceState({}, '', newPath + location.search + location.hash);
+			}
         })();
     </script>
 </body>
