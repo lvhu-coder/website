@@ -5,9 +5,13 @@
 	<meta charset="utf-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>MinutesTillDawn</title>
-	<script src="Build/UnityLoader.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/lvhu-coder/website/files/tmtd/Build/UnityLoader.js"></script>
 	<script>
-		var gameInstance = UnityLoader.instantiate("gameContainer", "Build/10MinutesTillDawnWebGL.json");
+		var gameInstance = UnityLoader.instantiate(
+			"gameContainer",
+			"https://cdn.jsdelivr.net/gh/lvhu-coder/website/files/tmtd/Build/10MinutesTillDawnWebGL.json"
+		);
+
 		var scaleToFit;
 		try {
 			scaleToFit = !!JSON.parse("");
