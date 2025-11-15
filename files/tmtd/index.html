@@ -1,47 +1,97 @@
 <!DOCTYPE html>
 <html lang="en-us">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>MinutesTillDawn</title>
 
-    <script src="https://cdn.jsdelivr.net/gh/lvhu-coder/website/files/tmtd/Build/UnityProgress.js"></script>
+    <style>
+        #loader {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        #loader .spinner {
+            width: 40px;
+            height: 40px;
+            border: 5px solid #444;
+            border-top: 5px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        #loader .progress {
+            width: 60%;
+            height: 10px;
+            background: #333;
+            display: none;
+        }
+        #loader .progress .full {
+            height: 100%;
+            background: white;
+            transform-origin: left;
+            transform: scaleX(0);
+        }
+    </style>
+
+    <script>
+        function UnityProgress(gameInstance, progress) {
+            if (!gameInstance.Module) return;
+
+            const loader = document.querySelector("#loader");
+
+            if (!gameInstance.progress) {
+                const bar = loader.querySelector(".progress");
+                bar.style.display = "block";
+                gameInstance.progress = bar.querySelector(".full");
+                loader.querySelector(".spinner").style.display = "none";
+            }
+
+            gameInstance.progress.style.transform = `scaleX(${progress})`;
+
+            if (progress === 1 && !gameInstance.removeTimeout) {
+                gameInstance.removeTimeout = setTimeout(() => {
+                    loader.style.display = "none";
+                }, 1500);
+            }
+        }
+    </script>
+
     <script src="https://cdn.jsdelivr.net/gh/lvhu-coder/website/files/tmtd/Build/UnityLoader.js"></script>
 
     <script>
-        var gameInstance = UnityLoader.instantiate(
-            "gameContainer",
-            "https://cdn.jsdelivr.net/gh/lvhu-coder/website/files/tmtd/Build/10MinutesTillDawnWebGL.json",
-            { onProgress: UnityProgress }
-        );
+        var gameInstance = null;
 
-        var scaleToFit;
-        try {
-            scaleToFit = !!JSON.parse("");
-        } catch (e) {
-            scaleToFit = true;
-        }
+        document.addEventListener("DOMContentLoaded", () => {
+            gameInstance = UnityLoader.instantiate(
+                "gameContainer",
+                "https://cdn.jsdelivr.net/gh/lvhu-coder/website/files/tmtd/Build/10MinutesTillDawnWebGL.json",
+                { onProgress: UnityProgress }
+            );
+        });
 
         function onResize() {
+            if (!gameInstance || !gameInstance.Module) return;
+
             var canvas = gameInstance.Module.canvas;
             var container = gameInstance.container;
-            var w, h;
 
-            if (scaleToFit) {
-                w = window.innerWidth;
-                h = window.innerHeight;
+            var w = window.innerWidth;
+            var h = window.innerHeight;
 
-                var r = 675 / 1200;
+            const r = 675 / 1200;
 
-                if (w * r > window.innerHeight) {
-                    w = Math.min(w, Math.ceil(h / r));
-                }
-                h = Math.floor(w * r);
-            } else {
-                w = 1200;
-                h = 675;
-            }
+            if (w * r > h) w = Math.min(w, Math.ceil(h / r));
+            h = Math.floor(w * r);
 
             container.style.width = canvas.style.width = w + "px";
             container.style.height = canvas.style.height = h + "px";
@@ -56,24 +106,25 @@
             background: #000;
             width: 100%;
             height: 100%;
-            overflow: visible;
-            padding: 0;
             margin: 0;
+            padding: 0;
+            overflow: hidden;
         }
-        div#gameContainer {
-            background: transparent !important;
+        #gameContainer {
             position: absolute;
         }
-        div#gameContainer canvas {
-            position: absolute;
-        }
-        div#gameContainer[data-pixelated='true'] canvas {
+        #gameContainer[data-pixelated='true'] canvas {
             image-rendering: pixelated;
         }
     </style>
 </head>
 
-<body onload="onResize();">
+<body>
+    <div id="loader">
+        <div class="spinner"></div>
+        <div class="progress"><div class="full"></div></div>
+    </div>
+
     <div id="gameContainer" data-pixelated="true"></div>
 
     <script>
@@ -81,22 +132,22 @@
             try {
                 var allow = sessionStorage.getItem('allow_game');
             } catch (e) { var allow = null; }
+
             if (!allow) {
                 location.replace('/');
                 return;
             }
+
             try { sessionStorage.removeItem('allow_game'); } catch (e) {}
 
-            var p = location.pathname;
-            var index = p.indexOf('/website');
-
-            if (index !== -1) {
-                var newPath = p.substring(0, index + 8);
+            let p = location.pathname;
+            let i = p.indexOf('/website');
+            if (i !== -1) {
+                let newPath = p.substring(0, i + 8);
                 if (!newPath.endsWith('/')) newPath += '/';
                 history.replaceState({}, '', newPath + location.search + location.hash);
             }
         })();
     </script>
-
 </body>
 </html>
