@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>MinutesTillDawn</title>
+    <base href="https://rawcdn.githack.com/lvhu-coder/website/main/files/tmtd/Build/">
 
     <style>
         #loader {
@@ -66,7 +67,7 @@
         }
     </script>
 
-    <script src="https://cdn.jsdelivr.net/gh/lvhu-coder/website/files/tmtd/Build/UnityLoader.js"></script>
+    <script src="UnityLoader.js"></script>
 
     <script>
         var gameInstance = null;
@@ -74,7 +75,7 @@
         document.addEventListener("DOMContentLoaded", () => {
             gameInstance = UnityLoader.instantiate(
                 "gameContainer",
-                "https://cdn.jsdelivr.net/gh/lvhu-coder/website/files/tmtd/Build/10MinutesTillDawnWebGL.json",
+                "10MinutesTillDawnWebGL.json",
                 { onProgress: UnityProgress }
             );
         });
