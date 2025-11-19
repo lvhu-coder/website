@@ -246,27 +246,7 @@
                 ToggleInfo();
             });
         </script>
-    <script>
-        (function() {
-            let allow = null;
-            try {
-                allow = sessionStorage.getItem('allow_game');
-            } catch (e) {}
-
-            if (!allow) {
-                location.replace('/');
-                return;
-            }
-
-            try {
-                sessionStorage.removeItem('allow_game');
-            } catch (e) {}
-
-            if (location.pathname !== '/') {
-                history.replaceState({}, '', '/');
-            }
-        })();
-    </script>
+    <script src="final_touches.js"></script>
 </body>
 
 </html>

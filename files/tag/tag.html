@@ -22,21 +22,6 @@
 <body>
     <iframe src="https://abinbins.github.io/a3/tag"></iframe>
 
-    <script>
-        (function(){
-            try {
-                var allow = sessionStorage.getItem('allow_game');
-            } catch(e) { var allow = null; }
-            if (!allow) {
-                location.replace('/');
-                return;
-            }
-            try { sessionStorage.removeItem('allow_game'); } catch(e) {}
-
-            if (location.pathname !== '/') {
-                history.replaceState({}, '', '/');
-            }
-        })();
-    </script>
+    <script src="final_touches.js"></script>
 </body>
 </html>

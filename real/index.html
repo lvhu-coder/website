@@ -398,7 +398,7 @@
         try { sessionStorage.removeItem('allow_real'); } catch(e) {}
 
         if (location.pathname !== '/') {
-            history.replaceState({}, '', '/');
+            history.replaceState({}, '', location.pathname);
         }
 
         var elems = Array.prototype.slice.call(document.body.children);

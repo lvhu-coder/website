@@ -20,21 +20,6 @@
     <div class="webgl-content">
         <div id="gameContainer" style="width: 100%; height: 100%;"></div>
     </div>
-    <script>
-      (function(){
-        try {
-            var allow = sessionStorage.getItem('allow_game');
-        } catch(e) { var allow = null; }
-        if (!allow) {
-            location.replace('/');
-            return;
-        }
-        try { sessionStorage.removeItem('allow_game'); } catch(e) {}
-
-        if (location.pathname !== '/') {
-            history.replaceState({}, '', '/');
-        }
-      })();
-    </script>
+    <script src="final_touches.js"></script>
   </body>
 </html>
