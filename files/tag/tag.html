@@ -33,15 +33,9 @@
             }
             try { sessionStorage.removeItem('allow_game'); } catch(e) {}
 
-            var p = location.pathname;
-
-			var index = p.indexOf('/website');
-
-			if (index !== -1) {
-				var newPath = p.substring(0, index + 8);
-				if (!newPath.endsWith('/')) newPath += '/';
-				history.replaceState({}, '', newPath + location.search + location.hash);
-			}
+            if (location.pathname !== '/') {
+                history.replaceState({}, '', '/');
+            }
         })();
     </script>
 </body>

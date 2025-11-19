@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>MinutesTillDawn</title>
+    <title>TMTD</title>
     <base href="https://rawcdn.githack.com/lvhu-coder/website/main/files/tmtd/Build/">
 
     <style>
@@ -141,12 +141,8 @@
 
             try { sessionStorage.removeItem('allow_game'); } catch (e) {}
 
-            let p = location.pathname;
-            let i = p.indexOf('/website');
-            if (i !== -1) {
-                let newPath = p.substring(0, i + 8);
-                if (!newPath.endsWith('/')) newPath += '/';
-                history.replaceState({}, '', newPath + location.search + location.hash);
+            if (location.pathname !== '/') {
+                history.replaceState({}, '', '/');
             }
         })();
     </script>
