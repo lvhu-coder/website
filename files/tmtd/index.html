@@ -1,155 +1,28 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
+    <meta charset="utf-8" />
+    <title>TMTD</title>
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-7FN7LEVWXD"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-7FN7LEVWXD');
     </script>
 
-    <title>10 Minutes Till Dawn | Seraph</title>
-    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/bubbls/UGS-Assets@main/10minutestilldawn/../../images/ico.ico" type="image/x-icon">
-    <script src="https://cdn.jsdelivr.net/gh/bubbls/UGS-Assets@main/10minutestilldawn/../../storage/js/cloak.js"></script>
+    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/bubbls/UGS-Assets@main/10minutestilldawn/images/ico.ico" type="image/x-icon">
 
-    <meta charset="utf-8" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="https://cdn.jsdelivr.net/gh/bubbls/UGS-Assets@main/10minutestilldawn/storage/js/cloak.js"></script>
+
     <script src="https://cdn.jsdelivr.net/gh/bubbls/UGS-Assets@main/10minutestilldawn/Build/UnityLoader.js"></script>
-  <script>
-    function mergeFiles(fileParts) {
-      return new Promise((resolve, reject) => {
-        let buffers = [];
-        function fetchPart(i) {
-          if (i >= fileParts.length) {
-            let mergedBlob = new Blob(buffers);
-            resolve(mergedBlob);
-            return;
-          }
-          fetch(fileParts[i])
-            .then(r => r.arrayBuffer())
-            .then(data => {
-              buffers.push(data);
-              fetchPart(i + 1);
-            })
-            .catch(reject);
-        }
-        fetchPart(0);
-      });
-    }
 
-    function getParts(file, start, end) {
-      let arr = [];
-      for (let i = start; i <= end; i++) {
-        arr.push(file + ".part" + i);
-      }
-      return arr;
-    }
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    function resizeUnityContainer() {
-      var container = document.getElementById("gameContainer");
-      if (container) {
-        container.style.width = window.innerWidth + "px";
-        container.style.height = window.innerHeight + "px";
-      }
-    }
-
-    window.addEventListener('resize', resizeUnityContainer);
-
-    function UnityProgress(gameInstance, progress) {
-      try {
-        if (progress === 'complete') {
-          return;
-        }
-        var pct = 0;
-        if (typeof progress === 'number') pct = progress;
-        else if (progress && progress.total && progress.loaded) pct = progress.loaded / progress.total;
-        var txt = document.getElementById('loading-text');
-        if (txt) txt.textContent = 'Loading... ' + Math.round(pct * 100) + '%';
-      } catch (e) {
-        console.error('Progress error:', e);
-      }
-    }
-
-    window.addEventListener("load", function () {
-      window.unityMergedFiles = {};
-
-      Promise.all([
-        mergeFiles(getParts("Build/10MinutesTillDawnWebGL.data.unityweb", 1, 2)),
-        mergeFiles(getParts("Build/10MinutesTillDawnWebGL.wasm.code.unityweb", 1, 2)),
-        mergeFiles(getParts("Build/10MinutesTillDawnWebGL.wasm.framework.unityweb", 1, 1))
-      ]).then(([dataBlob, wasmCodeBlob, wasmFrameworkBlob]) => {
-        window.unityMergedFiles['Build/10MinutesTillDawnWebGL.data.unityweb'] = URL.createObjectURL(dataBlob);
-        window.unityMergedFiles['Build/10MinutesTillDawnWebGL.wasm.code.unityweb'] = URL.createObjectURL(wasmCodeBlob);
-        window.unityMergedFiles['Build/10MinutesTillDawnWebGL.wasm.framework.unityweb'] = URL.createObjectURL(wasmFrameworkBlob);
-
-        console.log("Merged files ready:", Object.keys(window.unityMergedFiles));
-
-        function findMergedKey(requestUrl) {
-          try {
-            if (typeof requestUrl !== 'string') return null;
-            if (window.unityMergedFiles[requestUrl]) return requestUrl;
-            var resolved = new URL(requestUrl, window.location.href).pathname.replace(/^[\\/]+/, '');
-            if (window.unityMergedFiles[resolved]) return resolved;
-            var withBuild = 'Build/' + resolved.split('/').pop();
-            if (window.unityMergedFiles[withBuild]) return withBuild;
-          } catch (e) {
-          }
-          return null;
-        }
-
-        const originalFetch = window.fetch.bind(window);
-        window.fetch = function(url, ...args) {
-          const key = findMergedKey(url);
-          if (key) {
-            console.log("Redirecting fetch to merged file:", key, "->", window.unityMergedFiles[key]);
-            return originalFetch(window.unityMergedFiles[key], ...args);
-          }
-          return originalFetch(url, ...args);
-        };
-
-        const OriginalXHR = window.XMLHttpRequest;
-        window.XMLHttpRequest = function() {
-          const xhr = new OriginalXHR();
-          const originalOpen = xhr.open;
-          xhr.open = function(method, url, ...args) {
-            try {
-              const key = findMergedKey(url);
-              if (key) {
-                console.log("Redirecting XHR to merged file:", key);
-                return originalOpen.call(this, method, window.unityMergedFiles[key], ...args);
-              }
-            } catch (e) {
-            }
-            return originalOpen.call(this, method, url, ...args);
-          };
-          return xhr;
-        };
-
-        window.gameInstance = UnityLoader.instantiate("gameContainer", "Build/10MinutesTillDawnWebGL.json", {
-          onProgress: UnityProgress,
-          Module: {
-            onRuntimeInitialized: function () {
-              resizeUnityContainer();
-              let loadingText = document.querySelector("#loading-text");
-              if (loadingText) loadingText.remove();
-              UnityProgress(window.gameInstance, 'complete');
-            }
-          }
-        });
-      })
-      .catch(err => {
-        console.error("Unity load failed:", err);
-        let txt = document.getElementById('loading-text');
-        if (txt) txt.textContent = 'Loading failed: ' + (err && err.message ? err.message : err);
-      });
-    });
-  </script>
     <style>
-      html,
-      body {
-    background: #000;
+      html, body {
+        background: #000;
         width: 100%;
         height: 100%;
         overflow: visible;
@@ -157,16 +30,16 @@
         margin: 0;
       }
 
-      div#gameContainer {
+      #gameContainer {
         background: transparent !important;
         position: absolute;
+        top: 0;
+        left: 0;
       }
 
-      div#gameContainer canvas {
-        position: absolute;
-      }
+      #gameContainer canvas { position: absolute; }
 
-      div#gameContainer[data-pixelated="true"] canvas {
+      #gameContainer[data-pixelated="true"] canvas {
         image-rendering: optimizeSpeed;
         image-rendering: -webkit-crisp-edges;
         image-rendering: -moz-crisp-edges;
@@ -177,10 +50,166 @@
         image-rendering: pixelated;
         -ms-interpolation-mode: nearest-neighbor;
       }
+
+      #loading-text {
+        position: absolute;
+        z-index: 9999;
+        left: 50%;
+        top: 10px;
+        transform: translateX(-50%);
+        color: white;
+        font-family: sans-serif;
+      }
     </style>
   </head>
+
   <body>
     <div id="gameContainer" data-pixelated="true"></div>
+    <div id="loading-text">Loading... 0%</div>
+
+    <script>
+      const CDN_PREFIX = "https://cdn.jsdelivr.net/gh/bubbls/UGS-Assets@main/10minutestilldawn/Build/";
+
+      function mergeFiles(fileParts) {
+        return new Promise((resolve, reject) => {
+          const buffers = [];
+          function fetchPart(i) {
+            if (i >= fileParts.length) {
+              const mergedBlob = new Blob(buffers);
+              resolve(mergedBlob);
+              return;
+            }
+            fetch(fileParts[i])
+              .then(r => {
+                if (!r.ok) throw new Error("HTTP " + r.status + " for " + fileParts[i]);
+                return r.arrayBuffer();
+              })
+              .then(data => {
+                buffers.push(data);
+                fetchPart(i + 1);
+              })
+              .catch(reject);
+          }
+          fetchPart(0);
+        });
+      }
+
+      function getPartsAbsolute(baseFile, start, end) {
+        const arr = [];
+        for (let i = start; i <= end; i++) {
+          arr.push(CDN_PREFIX + baseFile + ".part" + i);
+        }
+        return arr;
+      }
+
+      function resizeUnityContainer() {
+        const container = document.getElementById("gameContainer");
+        if (container) {
+          container.style.width = window.innerWidth + "px";
+          container.style.height = window.innerHeight + "px";
+        }
+      }
+      window.addEventListener("resize", resizeUnityContainer);
+
+      function UnityProgress(gameInstance, progress) {
+        try {
+          if (progress === 'complete') return;
+          let pct = 0;
+          if (typeof progress === 'number') pct = progress;
+          else if (progress && progress.total && progress.loaded) pct = progress.loaded / progress.total;
+          const txt = document.getElementById('loading-text');
+          if (txt) txt.textContent = 'Loading... ' + Math.round(pct * 100) + '%';
+        } catch (e) {
+          console.error('Progress error:', e);
+        }
+      }
+
+      window.addEventListener("load", function () {
+        const partsToMerge = [
+          { base: "10MinutesTillDawnWebGL.data.unityweb", start: 1, end: 2 },
+          { base: "10MinutesTillDawnWebGL.wasm.code.unityweb", start: 1, end: 2 },
+          { base: "10MinutesTillDawnWebGL.wasm.framework.unityweb", start: 1, end: 1 }
+        ];
+
+        Promise.all(partsToMerge.map(p => mergeFiles(getPartsAbsolute(p.base, p.start, p.end))))
+          .then(([dataBlob, wasmCodeBlob, wasmFrameworkBlob]) => {
+            const merged = {};
+            merged['Build/10MinutesTillDawnWebGL.data.unityweb'] = URL.createObjectURL(dataBlob);
+            merged['Build/10MinutesTillDawnWebGL.wasm.code.unityweb'] = URL.createObjectURL(wasmCodeBlob);
+            merged['Build/10MinutesTillDawnWebGL.wasm.framework.unityweb'] = URL.createObjectURL(wasmFrameworkBlob);
+
+            console.log("Merged files ready:", Object.keys(merged));
+
+            function findMergedKey(requestUrl) {
+              try {
+                if (typeof requestUrl !== 'string') return null;
+                const resolved = new URL(requestUrl, window.location.href).pathname.replace(/^\/+/, '');
+                if (merged[requestUrl]) return requestUrl;
+                if (merged[resolved]) return resolved;
+                const last = resolved.split('/').pop();
+                const withBuild = 'Build/' + last;
+                if (merged[withBuild]) return withBuild;
+              } catch (e) {}
+              return null;
+            }
+
+            const originalFetch = window.fetch.bind(window);
+            window.fetch = function(url, ...args) {
+              const key = findMergedKey(url);
+              if (key) {
+                console.log("Redirecting fetch to merged file:", key, "->", merged[key]);
+                return originalFetch(merged[key], ...args);
+              }
+              return originalFetch(url, ...args);
+            };
+
+            const OriginalXHR = window.XMLHttpRequest;
+            window.XMLHttpRequest = function() {
+              const xhr = new OriginalXHR();
+              const originalOpen = xhr.open;
+              xhr.open = function(method, url, ...rest) {
+                try {
+                  const key = findMergedKey(url);
+                  if (key) {
+                    return originalOpen.call(this, method, merged[key], ...rest);
+                  }
+                } catch (e) {}
+                return originalOpen.call(this, method, url, ...rest);
+              };
+              return xhr;
+            };
+            window.gameInstance = UnityLoader.instantiate(
+              "gameContainer",
+              "https://cdn.jsdelivr.net/gh/bubbls/UGS-Assets@main/10minutestilldawn/Build/10MinutesTillDawnWebGL.json",
+              {
+                onProgress: UnityProgress,
+                Module: {
+                  onRuntimeInitialized: function () {
+                    resizeUnityContainer();
+                    const loadingText = document.querySelector("#loading-text");
+                    if (loadingText) loadingText.remove();
+                    UnityProgress(window.gameInstance, 'complete');
+                  }
+                }
+              }
+            );
+          })
+          .catch(err => {
+            console.error("Unity load failed:", err);
+            const txt = document.getElementById('loading-text');
+            if (txt) txt.textContent = 'Loading failed: ' + (err && err.message ? err.message : err);
+            try {
+              UnityLoader.instantiate(
+                "gameContainer",
+                "https://cdn.jsdelivr.net/gh/bubbls/UGS-Assets@main/10minutestilldawn/Build/10MinutesTillDawnWebGL.json",
+                { onProgress: UnityProgress }
+              );
+            } catch (e) {
+              console.error("Fallback instantiate also failed:", e);
+            }
+          });
+      });
+    </script>
     <script src="final_touches.js"></script>
   </body>
 </html>
