@@ -86,7 +86,7 @@ body {
     }
 
     .webgl-content .logo.Dark {
-        //background-image: url('logo.png');
+        background-image: url('logo.png');
     }
 
     .webgl-content .progress.Dark .empty {
