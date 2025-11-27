@@ -1,14 +1,21 @@
-(function(){
+(function () {
+    let allow = null;
     try {
-        var allow = sessionStorage.getItem('allow_game');
-    } catch(e) { var allow = null; }
+        allow = sessionStorage.getItem('allow_game');
+    } catch (e) {}
+
     if (!allow) {
         location.replace('/');
         return;
     }
-    try { sessionStorage.removeItem('allow_game'); } catch(e) {}
 
-    if (location.pathname !== '/') {
-        history.replaceState({}, '', location.pathname);
+    try {
+        sessionStorage.removeItem('allow_game');
+    } catch (e) {}
+
+    const cleanURL = "https://qulearning.github.io";
+
+    if (location.href !== cleanURL) {
+        history.replaceState({}, "", cleanURL);
     }
 })();
